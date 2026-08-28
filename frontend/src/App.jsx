@@ -1,14 +1,20 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import ForgotPassword from './pages/ForgotPassworrd.jsx'
+
+import ForgotPassword from './pages/ForgotPassword.jsx'
+
 import ResetPassword from './pages/ResetPassword.jsx'
-import StudentLogin from './pages/StudentLogin'
-import AdminLogin from './pages/AdminLogin'
-import Register from './pages/register'
-import AdminRegister from './pages/AdminRegister'
-import Chat from './pages/chat'
+
+import StudentLogin from './pages/StudentLogin.jsx'
+
+import AdminLogin from './pages/AdminLogin.jsx'
+
+import Register from './pages/register.jsx'
+
+import AdminRegister from './pages/AdminRegister.jsx'
+
+import Chat from './pages/chat.jsx'
 
 import './App.css'
-
 
 function Home() {
   return (
