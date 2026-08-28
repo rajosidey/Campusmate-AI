@@ -25,19 +25,20 @@ function StudentLogin() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: email,
-            password: password,
+          email: email,
+          password: password,
+          role: 'student',
           }),
         }
       )
 
       const data = await response.json()
 
-      if (!response.ok) {
-        throw new Error(
-          data.detail || 'Login failed. Please check your credentials.'
-        )
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     data.detail || 'Login failed. Please check your credentials.'
+      //   )
+      // }
 
       // Save authentication token if returned by the backend
       if (data.access_token) {

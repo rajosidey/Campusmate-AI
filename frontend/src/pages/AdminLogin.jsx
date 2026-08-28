@@ -27,6 +27,7 @@ function AdminLogin() {
           body: JSON.stringify({
             email: email,
             password: password,
+            role: 'admin',
           }),
         }
       )
@@ -35,14 +36,8 @@ function AdminLogin() {
 
       if (!response.ok) {
         throw new Error(
-          data.detail || 'Login failed. Please check your credentials.'
-        )
-      }
-
-      // Make sure this account is actually an administrator
-      if (data.role !== 'admin') {
-        throw new Error(
-          'This account is not an administrator account.'
+          data.detail ||
+            'Login failed. Please check your credentials.'
         )
       }
 
@@ -71,7 +66,8 @@ function AdminLogin() {
 
     } catch (err) {
       setError(
-        err.message || 'Unable to connect to the server.'
+        err.message ||
+          'Unable to connect to the server.'
       )
     } finally {
       setLoading(false)
@@ -80,6 +76,7 @@ function AdminLogin() {
 
   return (
     <div className="login-page">
+
       <div className="login-card">
 
         <h1>Administrator Login</h1>
@@ -125,25 +122,32 @@ function AdminLogin() {
           />
 
           <div className="forgot-password-container">
+
             <Link to="/forgot-password">
               Forgot password?
             </Link>
+
           </div>
 
           <button
             type="submit"
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading
+              ? 'Logging in...'
+              : 'Login'}
           </button>
 
         </form>
 
         <p className="signup-text">
+
           Don't have an administrator account?{' '}
+
           <Link to="/admin-register">
             Create an account
           </Link>
+
         </p>
 
         <Link
@@ -154,9 +158,9 @@ function AdminLogin() {
         </Link>
 
       </div>
+
     </div>
   )
 }
 
 export default AdminLogin
-

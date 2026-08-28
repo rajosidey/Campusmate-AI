@@ -153,12 +153,54 @@ def register_user(
 
 
 # =========================================================
+# ADMINISTRATOR REGISTRATION
+# =========================================================
+
+@app.post("/auth/admin-register")
+def register_admin(
+    user: RegisterRequest,
+    db: Session = Depends(get_db)
+):
+    # Check if email already exists
+    existing_user = (
+        db.query(models.User)
+        .filter(models.User.email == user.email)
+        .first()
+    )
+
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="An account with this email already exists."
+        )
+
+    # Administrator registration creates an admin account
+    new_user = models.User(
+        name=user.name,
+        email=user.email,
+        password_hash=hash_password(user.password),
+        role="admin",
+        language=user.language
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {
+        "message": "Administrator account created successfully",
+        "user_id": new_user.id
+    }
+
+
+# =========================================================
 # LOGIN
 # =========================================================
 
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+    role: str
 
 
 @app.post("/auth/login")
@@ -189,7 +231,27 @@ def login_user(
             detail="Invalid email or password."
         )
 
-    # Generate JWT
+    # Verify that the account is being used
+    # through the correct login portal
+    if existing_user.role != user.role:
+        if user.role == "student":
+            raise HTTPException(
+                status_code=403,
+                detail="This is an administrator account. Please use the Administrator Login."
+            )
+
+        if user.role == "admin":
+            raise HTTPException(
+                status_code=403,
+                detail="This is a student account. Please use the Student Login."
+            )
+
+        raise HTTPException(
+            status_code=403,
+            detail="Incorrect login portal for this account."
+        )
+
+    # Generate JWT only after role verification
     access_token = create_access_token(
         user_id=existing_user.id,
         role=existing_user.role
@@ -205,7 +267,6 @@ def login_user(
         "role": existing_user.role,
         "language": existing_user.language
     }
-
 
 # =========================================================
 # CURRENT USER

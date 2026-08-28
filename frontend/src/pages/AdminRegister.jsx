@@ -21,21 +21,20 @@ function AdminRegister() {
     setLoading(true)
 
     try {
-      const response = await fetch(
-        'http://127.0.0.1:8000/auth/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: name.trim(),
-            email: email.trim(),
-            password,
-            role: 'admin',
-          }),
-        }
-      )
+     const response = await fetch(
+  'http://127.0.0.1:8000/auth/admin-register',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: name.trim(),
+      email: email.trim(),
+      password,
+    }),
+  }
+)
 
       const data = await response.json()
 
