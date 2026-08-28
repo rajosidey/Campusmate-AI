@@ -23,6 +23,14 @@ function Chat() {
   const token = localStorage.getItem('access_token')
 
   // --------------------------------------------------
+  // API URL
+  // --------------------------------------------------
+
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    'http://127.0.0.1:8000'
+
+  // --------------------------------------------------
   // Authentication
   // --------------------------------------------------
 
@@ -81,7 +89,7 @@ function Chat() {
   }
 
   // --------------------------------------------------
-  // Load chat history from database
+  // Load chat history
   // --------------------------------------------------
 
   const loadHistory = async () => {
@@ -91,7 +99,7 @@ function Chat() {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/ai/history',
+        `${API_URL}/ai/history`,
         {
           method: 'GET',
           headers: {
@@ -200,7 +208,7 @@ function Chat() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/ai/history/${selectedConversationId}`,
+        `${API_URL}/ai/history/${selectedConversationId}`,
         {
           method: 'GET',
           headers: {
@@ -287,7 +295,7 @@ function Chat() {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/ai/chat',
+        `${API_URL}/ai/chat`,
         {
           method: 'POST',
 
@@ -864,7 +872,6 @@ function Chat() {
                     </div>
 
                   </div>
-
                 )
               )}
 
