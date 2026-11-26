@@ -20,7 +20,7 @@ function ForgotPassword() {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/admin/register`,
+        `${API_BASE_URL}/auth/forgot-password`,
         {
           method: 'POST',
           headers: {
