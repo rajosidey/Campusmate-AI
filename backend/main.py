@@ -1,5 +1,5 @@
 import os
-import ollama
+from groq import Groq
 
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -38,7 +38,12 @@ FRONTEND_URL = os.getenv(
     "FRONTEND_URL",
     "http://localhost:5173"
 )
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY is not configured.")
+
+groq_client = Groq(api_key=GROQ_API_KEY)
 
 # =========================================================
 # FASTAPI APP
@@ -447,7 +452,7 @@ def reset_password(
 
 
 # =========================================================
-# CAMPUSMATE AI CHAT - LOCAL OLLAMA
+# CAMPUSMATE AI CHAT - GROQ HOSTED INFERENCE
 # =========================================================
 class ChatRequest(BaseModel):
     message: str
@@ -570,13 +575,13 @@ not a generic chatbot.
     db.commit()
 
     # -----------------------------------------------------
-    # Send request to Ollama
+    # Send request to Groq
     # -----------------------------------------------------
 
     try:
 
-        response = ollama.chat(
-            model="llama3.2",
+        response = groq_client.chat.completions.create(
+            model="openai/gpt-oss-120b",
             messages=[
                 {
                     "role": "system",
@@ -586,10 +591,15 @@ not a generic chatbot.
                     "role": "user",
                     "content": message
                 }
-            ]
+            ],
+            temperature=0.7,
+            max_completion_tokens=1024
         )
 
-        ai_response = response["message"]["content"]
+        ai_response = response.choices[0].message.content or ""
+
+        if not ai_response.strip():
+            raise ValueError("Groq returned an empty response.")
 
         # -------------------------------------------------
         # Save AI response
@@ -620,7 +630,7 @@ not a generic chatbot.
         db.rollback()
 
         print(
-            f"Ollama error: {e}"
+            f"Groq API error: {e}"
         )
 
         raise HTTPException(

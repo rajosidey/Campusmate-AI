@@ -1,0 +1,11 @@
+
+fastapi
+uvicorn[standard]
+sqlalchemy
+python-dotenv
+pydantic[email]
+PyJWT
+pwdlib[argon2]
+httpx
+psycopg2-binary
+groq
