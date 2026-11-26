@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../App.css'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 function AdminRegister() {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ function AdminRegister() {
 
     try {
      const response = await fetch(
-  'http://127.0.0.1:8000/auth/admin-register',
+  `${API_BASE_URL}/admin/register`,
   {
     method: 'POST',
     headers: {
