@@ -4,6 +4,7 @@ import '../App.css'
 
 function StudentLogin() {
   const navigate = useNavigate()
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,7 +19,7 @@ function StudentLogin() {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/auth/login',
+       `${API_BASE_URL}/auth/login`,
         {
           method: 'POST',
           headers: {
@@ -33,6 +34,11 @@ function StudentLogin() {
       )
 
       const data = await response.json()
+      if (!response.ok) {
+  throw new Error(
+    data.detail || 'Login failed. Please check your credentials.'
+  )
+}
 
       // if (!response.ok) {
       //   throw new Error(
