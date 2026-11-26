@@ -52,6 +52,7 @@ app = FastAPI()
 # =========================================================
 
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -59,11 +60,13 @@ app.add_middleware(
         "http://localhost:5174",
         "https://campusmate-ai-psi.vercel.app",
         "https://campusmate-czcc7lnyz-rajosidey.vercel.app",
+        "https://campusmate-psyvzdlbu-rajosidey.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 # =========================================================
