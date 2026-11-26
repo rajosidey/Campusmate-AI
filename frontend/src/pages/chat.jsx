@@ -21,6 +21,7 @@ function Chat() {
   )
 
   const token = localStorage.getItem('access_token')
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
   // --------------------------------------------------
   // Authentication
@@ -91,7 +92,7 @@ function Chat() {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/ai/history',
+        `${API_BASE_URL}/ai/history`,
         {
           method: 'GET',
           headers: {
@@ -200,7 +201,7 @@ function Chat() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/ai/history/${selectedConversationId}`,
+        `${API_BASE_URL}/ai/history/${selectedConversationId}`,
         {
           method: 'GET',
           headers: {
@@ -287,7 +288,7 @@ function Chat() {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/ai/chat',
+        `${API_BASE_URL}/ai/chat`,
         {
           method: 'POST',
 
