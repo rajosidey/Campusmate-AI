@@ -4,6 +4,7 @@ import '../App.css'
 
 function AdminLogin() {
   const navigate = useNavigate()
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,8 +18,8 @@ function AdminLogin() {
     setLoading(true)
 
     try {
-      const response = await fetch(
-        'http://127.0.0.1:8000/auth/login',
+     const response = await fetch(
+  `${API_BASE_URL}/auth/login`,
         {
           method: 'POST',
           headers: {
