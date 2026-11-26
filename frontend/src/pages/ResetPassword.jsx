@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 
@@ -6,6 +7,7 @@ function ResetPassword() {
   const navigate = useNavigate()
 
   const token = searchParams.get('token')
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -24,6 +26,11 @@ function ResetPassword() {
       return
     }
 
+    if (!API_BASE_URL) {
+      setError('Backend URL is not configured.')
+      return
+    }
+
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match.')
       return
@@ -38,7 +45,7 @@ function ResetPassword() {
       setLoading(true)
 
       const response = await fetch(
-        'http://127.0.0.1:8000/auth/reset-password',
+        `${API_BASE_URL}/auth/reset-password`,
         {
           method: 'POST',
           headers: {
@@ -79,7 +86,6 @@ function ResetPassword() {
       <p>Create a new password for your CampusMate AI account.</p>
 
       <form onSubmit={handleSubmit}>
-
         <input
           type="password"
           placeholder="New password"
@@ -99,19 +105,14 @@ function ResetPassword() {
         <button type="submit" disabled={loading}>
           {loading ? 'Resetting...' : 'Reset Password'}
         </button>
-
       </form>
 
       {message && (
-        <p style={{ color: 'green' }}>
-          {message}
-        </p>
+        <p style={{ color: 'green' }}>{message}</p>
       )}
 
       {error && (
-        <p style={{ color: 'red' }}>
-          {error}
-        </p>
+        <p style={{ color: 'red' }}>{error}</p>
       )}
     </div>
   )
